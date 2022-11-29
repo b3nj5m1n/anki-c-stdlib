@@ -1,0 +1,20 @@
+
+dir_download := "data/download"
+dir_extraction := "data/extraction"
+dir_reference := "data/reference"
+
+url := "https://upload.cppreference.com/mwiki/images/8/80/cppreference-doc-20190607.tar.xz"
+archive_name := without_extension(file_stem(url))
+
+
+move_data: extract_data
+    mv "{{dir_extraction}}/{{archive_name}}/reference/en.cppreference.com/w/c/" "{{dir_reference}}"
+
+extract_data: get_data
+    mkdir -p "{{dir_extraction}}"
+    tar xvf "{{dir_download}}/{{file_name(url)}}" --directory="{{dir_extraction}}" "{{archive_name}}/reference/en.cppreference.com/w/c/"
+
+get_data:
+    mkdir -p "{{dir_download}}"
+    if [ ! -f "{{dir_download}}/{{file_name(url)}}" ]; then curl "{{url}}" -o "{{dir_download}}/{{file_name(url)}}"; else echo "Data already downloaded."; fi
+
