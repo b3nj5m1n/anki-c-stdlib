@@ -1,1 +1,6 @@
 data/
+.clj-kondo/
+target/
+.nrepl-port
+.lsp
+.lein-repl-history
